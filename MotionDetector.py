@@ -4,60 +4,40 @@ import cv2
 
 class MotionDetector:
     def __init__(self):
-        self.master = None
-        self.disp = [0, 0]
-        self.velocity = [0, 0]
+        self.initBB = None
+        self.center = [0, 0]
         self.t_start = 0
-        self.t_end = 0
+        (major, minor) = cv2.__version__.split(".")[:2]
+        if int(major) == 3 and int(minor) < 3:
+            self.tracker = cv2.Tracker_create("CSRT")
+        else:
+            self.tracker = cv2.TrackerCSRT_create()
 
-    def get_targets(self, contours):
-        targets = []
-        for c in contours:
-            if cv2.contourArea(c) < 500:
-                continue
-            M = cv2.moments(c)  # ;print( M )
-            cx = int(M['m10'] / M['m00'])
-            cy = int(M['m01'] / M['m00'])
-            x, y, w, h = cv2.boundingRect(c)
-            ca = cv2.contourArea(c)
-            targets.append((cx, cy, ca))
-        return targets
+    def get_velocity(self, frame, face):
+        if frame is None:
+            return None
+        if face is None:
+            self.initBB = None
+            return None
+        if self.initBB is None and face is not None:
+            face = tuple(face)
+            self.initBB = face
+            self.center = (face[0] + face[2] / 2, face[1] + face[3] / 2)
+            self.tracker.init(frame, self.initBB)
+            return None
 
-    def get_center(self, targets):
-        mx = 0
-        my = 0
-        if targets:
-            area = 0
-            for x, y, a in targets:
-                mx += x * a
-                my += y * a
-                area += a
-            mx = int(round(mx / area, 0))
-            my = int(round(my / area, 0))
-        return mx, my
-
-    def get_velocity(self, frame0):
-        self.t_end = timeit.timeit()
-        frame1 = cv2.cvtColor(frame0, cv2.COLOR_BGR2GRAY)
-        frame2 = cv2.GaussianBlur(frame1, (15, 15), 0)
-        if self.master is None:
-            self.master = frame2
-            self.t_start = self.t_end
-            return 0
-        frame3 = cv2.absdiff(self.master, frame2)
-        frame4 = cv2.threshold(frame3, 80, 255, cv2.THRESH_BINARY)[1]
-        kernel = np.ones((2, 2), np.uint8)
-        frame5 = cv2.erode(frame4, kernel, iterations=4)
-        frame5 = cv2.dilate(frame5, kernel, iterations=8)
-        contours, _ = cv2.findContours(frame5.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-        # frame6 = frame0.copy()
-        targets = self.get_targets(contours)
-        (mx, my) = self.get_center(targets)
-        self.velocity[0] = abs(mx - self.disp[0]) / (self.t_end - self.t_start)
-        self.velocity[1] = abs(my - self.disp[1]) / (self.t_end - self.t_start)
-        vel = np.math.sqrt(self.velocity[0] ** 2 + self.velocity[1] ** 2)
-        self.disp[0] = mx
-        self.disp[1] = my
-        self.master = frame2
-        self.t_start = self.t_end
-        return vel
+        (H, W) = frame.shape[:2]
+        if self.initBB is not None:
+            (success, box) = self.tracker.update(frame)
+            if success:
+                (x, y, w, h) = [int(v) for v in box]
+                cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
+                newCenter = (x + w / 2, y + h / 2)
+                # t_end = timeit.timeit()
+                velocity = [0, 0]
+                #2 frames per second
+                velocity[0] = abs(newCenter[0] - self.center[0])/0.5
+                velocity[1] = abs(newCenter[1] - self.center[1])/0.5
+                vel = np.math.sqrt(velocity[0] ** 2 + velocity[1] ** 2)
+                self.center = newCenter
+                return vel

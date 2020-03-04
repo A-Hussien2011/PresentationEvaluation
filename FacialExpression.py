@@ -8,7 +8,6 @@ from tensorflow.python.keras.models import load_model, model_from_json
 class FacialExpression:
 
     def __init__(self):
-        self.face_cascade = cv2.CascadeClassifier('assets/haarcascade_frontalface_default.xml')
         self.exp_model = model_from_json(open("assets/facialExpressions/facialModel.json", "r").read())
         self.exp_model.load_weights('assets/facialExpressions/facial_expression_model_weights.h5')
 
@@ -23,13 +22,7 @@ class FacialExpression:
         max_index = np.argmax(predictions[0])
         return emotions[max_index]
 
-    def detect_faces(self, img):
-        gray_frame = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-        coords = self.face_cascade.detectMultiScale(gray_frame, 1.3, 5)
-        return coords
-
-    def classify(self, frame):
-        detections = self.detect_faces(frame)
+    def classify(self, frame, detections):
         predictions = {'happy': 0, 'neutral': 0, 'other': 0}
         for i in range(0, len(detections)):
             (startX, startY, w, h) = detections[i]
