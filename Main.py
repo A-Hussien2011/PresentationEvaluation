@@ -9,6 +9,8 @@ from FacialExpression import FacialExpression
 from MotionDetector import MotionDetector
 from HeadPoseDetector import HeadPoseDetector
 from ArmPoseDetector import ArmPoseDetector
+from ArmPositionExecuter import ArmPositionExecuter
+
 from ReportGenerator import ReportGenerator
 from TimeFrameVideo import TimeFrameVideo
 
@@ -21,6 +23,8 @@ if __name__ == '__main__':
     motion_detector = MotionDetector()
     headpose_detector = HeadPoseDetector()
     face_detector = FaceDetector()
+    arm_positon_exc = ArmPositionExecuter()
+
     fps = 1
     if int(video_type) == LOCAL_VIDEO:
         cap = cv2.VideoCapture('assets/videoplayback.mp4')
@@ -49,6 +53,7 @@ if __name__ == '__main__':
             face_exp = face_classifier.classify(frame, faces)
             velocity = motion_detector.get_velocity(frame, faces[0])
             head_pose = headpose_detector.get_head_pose(frame)
+            arm_pos = arm_positon_exc.process_new_frame(frame)
             timeframe.add_expression(face_exp)
             timeframe.add_headpose(head_pose)
             if velocity is not None: timeframe.add_velocity(int(velocity))
