@@ -11,8 +11,7 @@ class ArmPositionExecuter:
         self.nPoints = 18
         self.POSE_PAIRS = [[1, 0], [1, 2], [1, 5], [2, 3], [3, 4], [5, 6], [6, 7], [1, 8], [8, 9], [9, 10], [1, 11],
                            [11, 12], [12, 13], [0, 14], [0, 15], [14, 16], [15, 17]]
-        self.keypointsMapping = ['Nose', 'Neck', 'R-Sho', 'R-Elb', 'R-Wr', 'L-Sho', 'L-Elb', 'L-Wr', 'R-Hip', 'R-Knee',
-                                 'R-Ank', 'L-Hip', 'L-Knee', 'L-Ank', 'R-Eye', 'L-Eye', 'R-Ear', 'L-Ear']
+
         self.net = cv2.dnn.readNetFromCaffe(self.protoFile, self.weightsFile)
         self.threshold = 0.1
         # Empty list to store the detected keypoints
@@ -20,7 +19,6 @@ class ArmPositionExecuter:
         self.frame_width = 0
         self.frame_height = 0
         self.frame = None
-        self.prediction = arm_prediction.ArmPositionPrediction(self.points)
 
 
 
@@ -30,16 +28,25 @@ class ArmPositionExecuter:
         self.frame = frame
         self.frame_width = frame.shape[1]
         self.frame_height = frame.shape[0]
-        print(self.frame_width)
-        print(self.frame_height)
-        inpBlob = cv2.dnn.blobFromImage(frame, 1.0 / 255, (self.frame_width, self.frame_height),
+        # input image dimensions for the network
+        inWidth = 368
+        inHeight = 368
+        inpBlob = cv2.dnn.blobFromImage(frame, 1.0 / 255, (inWidth, inHeight),
                                         (0, 0, 0), swapRB=False, crop=False)
+
+        # print(self.frame_width)
+        # print(self.frame_height
+
+        # inpBlob = cv2.dnn.blobFromImage(frame, 1.0 / 255, (self.frame_width, self.frame_height),
+        #                                 (0, 0, 0), swapRB=False, crop=False)
         self.net.setInput(inpBlob)
 
         output = self.net.forward()
+        self.points = []
         self.extractPoints(output)
-        #print(self.points)
-        return self.prediction.predict_arm_position(self.points)
+        print(self.points)
+        prediction = arm_prediction.ArmPositionPrediction(self.points)
+        return prediction.predict_arm_position(self.points)
 
 
     def extractPoints(self, output):

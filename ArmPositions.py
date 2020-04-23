@@ -59,7 +59,8 @@ arm_gesture_type[ArmPositions.STRAIGHT_UP] = [0, 0, 0, 0, 0, 0, 0, 1, 0]
 arm_gesture_type[ArmPositions.STRAIGHT_DOWN] = [0, 0, 0, 0, 0, 0, 0, 0, 1]
 
 # Checking if the hashing is successful
-print(arm_gesture_type == {ArmPositions.UP: [1, 0, 0, 0, 0, 0, 0, 0, 0], ArmPositions.DOWN: [0, 1, 0, 0, 0, 0, 0, 0, 0]})
+#print(arm_gesture_type == {ArmPositions.UP: [1, 0, 0, 0, 0, 0, 0, 0, 0], ArmPositions.DOWN: [0, 1, 0, 0, 0, 0, 0, 0, 0]})
+
 
 def get_arm_gesture_type(type):
     return arm_gesture_type[type]
