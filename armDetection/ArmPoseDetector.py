@@ -4,8 +4,8 @@ import numpy as np
 
 class ArmPoseDetector:
     def __init__(self):
-        protoFile = "assets/bodyPose/pose_deploy_linevec.prototxt"
-        weightsFile = "assets/bodyPose/pose_iter_440000.caffemodel"
+        protoFile = "/content/PresentationEvaluation/assets/bodyPose/pose_deploy_linevec.prototxt"
+        weightsFile = "/content/PresentationEvaluation/assets/bodyPose/pose_iter_440000.caffemodel"
         self.net = cv2.dnn.readNetFromCaffe(protoFile, weightsFile)
         self.keypointsMapping = ['Nose', 'Neck', 'R-Sho', 'R-Elb', 'R-Wr', 'L-Sho', 'L-Elb', 'L-Wr', 'R-Hip', 'R-Knee',
                             'R-Ank',

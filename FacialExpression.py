@@ -8,8 +8,8 @@ from keras.models import load_model, model_from_json
 class FacialExpression:
 
     def __init__(self):
-        self.exp_model = model_from_json(open("assets/facialExpressions/facialModel.json", "r").read())
-        self.exp_model.load_weights('assets/facialExpressions/facial_expression_model_weights.h5')
+        self.exp_model = model_from_json(open("/content/PresentationEvaluation/assets/facialExpressions/facialModel.json", "r").read())
+        self.exp_model.load_weights('/content/PresentationEvaluation/assets/facialExpressions/facial_expression_model_weights.h5')
 
     def predict_exp(self, detected_face):
         emotions = ('angry', 'disgust', 'fear', 'happy', 'sad', 'surprise', 'neutral')
