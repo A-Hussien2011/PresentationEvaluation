@@ -66,7 +66,7 @@ def startVideoAnalysis(path):
 
 
 if __name__ == '__main__':
-    for file in os.listdir("/content/PresentationEvaluation/assets/videos/TedTalks"):
+    for file in os.listdir("/content/drive/My Drive/Graduation project/TedTalks"):
         if file.endswith(".mp4"):
             path = os.path.join("/content/PresentationEvaluation/assets/videos/TedTalks", file)
             print(path)
