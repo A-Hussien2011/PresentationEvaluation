@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 from IPython.utils import frame
 from keras_preprocessing.image import img_to_array
-from tensorflow.python.keras.models import load_model, model_from_json
+from keras.models import load_model, model_from_json
 
 
 class FacialExpression:
