@@ -11,7 +11,7 @@ class ReportGenerator:
         self.timeframes.append(timeframe)
 
     def generate_report(self):
-        with open('../content/drive/My Drive/Graduation project/assets/report.csv', 'a+', newline='') as file:
+        with open('assets/report.csv', 'a+', newline='') as file:
             file.seek(0)
             data = file.read(100)
             writer = csv.writer(file)
