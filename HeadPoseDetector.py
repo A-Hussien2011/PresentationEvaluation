@@ -6,7 +6,7 @@ class HeadPoseDetector:
 
     def __init__(self):
         self.detector = dlib.get_frontal_face_detector()
-        self.predictor = dlib.shape_predictor("/content/PresentationEvaluation/assets/headPose/shape_predictor_68_face_landmarks.dat")
+        self.predictor = dlib.shape_predictor("assets/headPose/shape_predictor_68_face_landmarks.dat")
 
     def get_direction(self, landmarks):
         left = landmarks.part(1)
