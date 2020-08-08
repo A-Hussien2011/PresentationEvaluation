@@ -74,58 +74,78 @@ class ReportGenerator:
 
         # front face
         if constants.FRONT_MIN < (self.face_front / self.face_count) < constants.FRONT_MAX:
-            msg += "Your frontal face sight is acceptable\n"
+            msg += "Your frontal face sight is acceptable, your front count: "
+            msg += str(self.face_front / self.face_count) + "\n"
         elif (self.face_front / self.face_count) < constants.FRONT_MIN:
-            msg += "You need to look more to the front\n"
+            msg += "You need to look more to the front, your front count: "
+            msg += str(self.face_front / self.face_count) + "\n"
         else:
-            msg += "You need to look left and right more\n"
-
+            msg += "You need to look left and right more, your front count: "
+            msg += str(self.face_front / self.face_count) + "\n"
         # left face
         if constants.LEFT_MIN < (self.face_left / self.face_count) < constants.LEFT_MAX:
-            msg += "Your left face sight movement is acceptable\n"
+            msg += "Your left face sight movement is acceptable, your left face count: "
+            msg += str(self.face_left / self.face_count) + "\n"
         elif (self.face_left / self.face_count) < constants.LEFT_MIN:
-            msg += "You need to look more to the left\n"
+            msg += "You need to look more to the left, your left face count: "
+            msg += str(self.face_left / self.face_count) + "\n"
         else:
-            msg += "Look less to the left pay attention to the right/front side\n"
+            msg += "Look less to the left pay attention to the right/front side, your left face count: "
+            msg += str(self.face_left / self.face_count) + "\n"
 
         # right face
         if constants.RIGHT_MIN < (self.face_right / self.face_count) < constants.RIGHT_MAX:
-            msg += "Your frontal face movement is acceptable\n"
+            msg += "Your frontal face movement is acceptable, your right face count: "
+            msg += str(self.face_right / self.face_count) + "\n"
         elif (self.face_front / self.face_count) < constants.RIGHT_MIN:
-            msg += "You need to look more to the front\n"
+            msg += "You need to look more to the front, your right face count: "
+            msg += str(self.face_right / self.face_count) + "\n"
         else:
-            msg += "You need to distribute your sight over the audience\n"
+            msg += "You need to distribute your sight over the audience, your right face count: "
+            msg += str(self.face_right / self.face_count) + "\n"
 
         # happy face
         if constants.HAPPY_MIN < (self.happy / self.face_count) < constants.HAPPY_MAX:
-            msg += "Your happy expressions are within the acceptable range\n"
+            msg += "Your happy expressions are within the acceptable range, your happy face count: "
+            msg += str(self.happy / self.face_count) + "\n"
         elif (self.happy / self.face_count) < constants.HAPPY_MIN:
-            msg += "You need to show more happy expressions (smile more)\n"
+            msg += "You need to show more happy expressions (smile more), your happy face count: "
+            msg += str(self.happy / self.face_count) + "\n"
         else:
-            msg += "You shouldn't be smiling all the time, show some other expressions to get the audience attention\n"
+            msg += "You shouldn't be smiling all the time, show some other expressions to get the audience attention, your happy face count: "
+            msg += str(self.happy / self.face_count) + "\n"
 
         if constants.NEUTRAL_MIN < (self.neutral / self.face_count) < constants.NEUTRAL_MAX:
-            msg += "Your neutral face expressions are within the acceptable range\n"
+            msg += "Your neutral face expressions are within the acceptable range, your neutral face count: "
+            msg += str(self.neutral / self.face_count) + "\n"
         elif (self.neutral / self.face_count) < constants.NEUTRAL_MIN:
-            msg += "You need to add more neutral facial expressions\n"
+            msg += "You need to add more neutral facial expressions, your neutral face count: "
+            msg += str(self.neutral / self.face_count) + "\n"
         else:
-            msg += "Too many neutral facial expressions\n"
+            msg += "Too many neutral facial expressions, your neutral face count: "
+            msg += str(self.neutral / self.face_count) + "\n"
 
         if constants.OTHER_MIN < (self.other / self.face_count) < constants.OTHER_MAX:
-            msg += "Your other facial expression  are within the acceptable range\n"
+            msg += "Your other facial expression  are within the acceptable range, your other face count: "
+            msg += str(self.other / self.face_count) + "\n"
         elif (self.other / self.face_count) < constants.OTHER_MIN:
-            msg += "You need to show more facial expressions rather than only smiles/neutral\n"
+            msg += "You need to show more facial expressions rather than only smiles/other, your other face count: "
+            msg += str(self.other / self.face_count) + "\n"
         else:
-            msg += "Show less other expressions(Sadness - anger - disgust .. etc)\n"
+            msg += "Show less other expressions(Sadness - anger - disgust .. etc), your other face count: "
+            msg += str(self.other / self.face_count) + "\n"
 
         if self.vel_count == 0:
             msg += "No velocity for your movement could be determined"
         elif constants.VELOCITY_MIN < (self.velocity / self.vel_count) < constants.VELOCITY_MAX:
-            msg += "The velocity of your movement is acceptable\n"
+            msg += "The velocity of your movement is acceptable, your velocity: "
+            msg += str(self.velocity / self.vel_count) + "\n"
         elif (self.velocity / self.vel_count) < constants.VELOCITY_MIN:
-            msg += "Move more to have better interaction with the audience\n"
+            msg += "Move more to have better interaction with the audience, your velocity: "
+            msg += str(self.velocity / self.vel_count) + "\n"
         else:
-            msg += "You need to move less not to disturb the audience\n"
+            msg += "You need to move less not to disturb the audience, your velocity: "
+            msg += str(self.velocity / self.vel_count) + "\n"
 
         with open('assets/' + self.timeframes[0].name + '.txt', 'a+', newline='') as file:
             file.write(msg)
